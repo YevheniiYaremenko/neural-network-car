@@ -8,9 +8,9 @@ public class Motor : MonoBehaviour {
 	public float rotate, speed;
 
 	public float heading;
-
-	// Use this for initialization
-	void Start () {
+    
+	void Start ()
+    {
 		agent = gameObject.GetComponent<Agent> ();
 		rotate = agent.MAX_ROTATION;
 		speed = agent._SPEED;
@@ -23,8 +23,8 @@ public class Motor : MonoBehaviour {
 		righttheta = 0.0f;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		heading = transform.rotation.eulerAngles.y - 90;
 
 		leftsteer = agent.leftForce;

@@ -9,21 +9,13 @@ public class RayCast : MonoBehaviour {
 
 	private Vector3 origin, left, frontleft, front, frontright, right;
 	private float heading;
-
-	// Use this for initialization
-	void Start () {
+    
+	void Start ()
+    {
 		//set detect radius
 		RayCast_Length = 5.0f;
 
-
 		origin = transform.position + Vector3.up * 0.2f;
-		/*
-		left = origin - (Vector3.forward * RayCast_Length);
-		frontleft = origin + (Vector3.left - Vector3.forward) * RayCast_Length;
-		front = origin + (Vector3.left * RayCast_Length);
-		frontright = origin + (Vector3.left + Vector3.forward) * RayCast_Length;
-		right = origin + (Vector3.forward * RayCast_Length);
-		*/
 		heading = transform.rotation.eulerAngles.y;
 		float angle = heading / 180 * Mathf.PI;
 
@@ -41,16 +33,9 @@ public class RayCast : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		origin = transform.position + Vector3.up * 0.2f;
-		/*
-		left = origin - (Vector3.forward * RayCast_Length);
-		frontleft = origin + (Vector3.left - Vector3.forward) * RayCast_Length;
-		front = origin + (Vector3.left * RayCast_Length);
-		frontright = origin + (Vector3.left + Vector3.forward) * RayCast_Length;
-		right = origin + (Vector3.forward * RayCast_Length);
-		*/
 		heading = transform.rotation.eulerAngles.y;
 		float angle = heading / 180 * Mathf.PI;
 

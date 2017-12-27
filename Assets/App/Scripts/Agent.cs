@@ -264,18 +264,15 @@ public class NNet {
 		}
 		this.outputLayer = new NLayer ();
 		this.outputLayer.LoadLayer (outneurons);
-		//Debug.Log ("fromgenome, outputlayer neruons#: " + outneurons.Count);
-		//Debug.Log ("fromgenome, outputlayer numInput: " + outneurons [0].numInputs);
 	}
 }
 
 
 //=================================================================================================================
-public class NLayer {
-	
+public class NLayer
+{
 	private int totalNeurons;
 	private int totalInputs;
-	
 	
 	List<Neuron> neurons = new List<Neuron>();
 	
@@ -380,7 +377,8 @@ public class NLayer {
 
 
 //=============================================================
-public class Neuron {
+public class Neuron
+{
 	public int numInputs;
 	public List<float> weights = new List<float>();
 	
@@ -424,12 +422,11 @@ public class Neuron {
 	}
 }
 
-//===================================
-public class Genome{
+public class Genome
+{
 	public float fitness;
 	public int ID;
 	public List<float> weights;
-	
 }
 
 

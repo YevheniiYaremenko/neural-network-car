@@ -22,20 +22,9 @@ public class Entity : MonoBehaviour {
 	private Quaternion defaultrot;
 
 	hit hit;
-
-	public void OnGUI(){
-		int x = 600;
-		int y = 400;
-		GUI.Label (new Rect (x, y, 200, 20), "CurrentFitness: " + currentAgentFitness);
-		GUI.Label (new Rect (x, y+20, 200, 20), "BestFitness: " + bestFitness);
-		GUI.Label (new Rect (x+200, y, 200, 20), "Genome: " + genAlg.currentGenome + " of " + genAlg.totalPopulation);
-		GUI.Label (new Rect (x+200, y + 20, 200, 20), "Generation: " + genAlg.generation);
-
-	}
-
-	// Use this for initialization
-	void Start () {
-
+    
+	void Start ()
+    {
 		genAlg = new GA ();
 		int totalWeights = 5 * 8 + 8 * 2 + 8 + 2;
 		genAlg.GenerateNewPopulation (15, totalWeights);
@@ -55,9 +44,9 @@ public class Entity : MonoBehaviour {
 		defaultpos = transform.position;
 		defaultrot = transform.rotation;
 	}
-
-	// Update is called once per frame
-	void Update () {
+    
+	void Update ()
+    {
 		checkpoints = hit.checkpoints;
 		if (testAgent.hasFailed) {
 			if(genAlg.GetCurrentGenomeIndex() == 15-1){
@@ -65,14 +54,20 @@ public class Entity : MonoBehaviour {
 				EvolveGenomes();
 				return;
 			}
-            //Debug.Log(string.Format("{0:0.00}", testAgent.dist));
             NextTestSubject();
 		}
 		currentAgentFitness = testAgent.dist;
 		if (currentAgentFitness > bestFitness) {
 			bestFitness = currentAgentFitness;
 		}
-	}
+
+        MainController.Instance.UpdateStatus(
+            currentAgentFitness,
+            bestFitness,
+            genAlg.currentGenome,
+            genAlg.totalPopulation,
+            genAlg.generation);
+    }
 
 	public void NextTestSubject()
     {
@@ -110,12 +105,8 @@ public class Entity : MonoBehaviour {
 		NextTestSubject ();
 	}
 
-	public int GetCurrentMemberOfPopulation(){
+	public int GetCurrentMemberOfPopulation()
+    {
 		return genAlg.GetCurrentGenomeIndex ();
 	}
-
-	public void PrintStats(){
-		//to be implemented
-	}
-
 }
