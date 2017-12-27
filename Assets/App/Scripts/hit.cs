@@ -38,6 +38,7 @@ public class hit : MonoBehaviour
         else
         {
 			crash = true;
+            MainController.Instance.LogGenomTest(GetComponent<Entity>().currentAgentFitness);
 		}
 	}
 }
