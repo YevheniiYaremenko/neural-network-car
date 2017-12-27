@@ -24,14 +24,18 @@ public class Agent : MonoBehaviour
 
 	public float dist;
 
-	hit hit;
+    MainController controller;
+
+    hit hit;
     
 	void Start ()
     {
-		hasFailed = false;
+        controller = MainController.Instance;
+
+        hasFailed = false;
 
 		neuralnet = new NNet ();
-		neuralnet.CreateNet (1, 5, 8, 2);
+		neuralnet.CreateNet (1, controller.inputCount, controller.hiddenNeuronsCount, controller.outputCount);
 		raycast = gameObject.GetComponent<RayCast> ();
 
 		l = raycast.dis_l;
@@ -230,17 +234,18 @@ public class NNet
         {
 			List<float> weights = new List<float> ();
 			hiddenLayers[i].GetWeights(ref weights);
-			for(int j=0; j<weights.Count;j++){
-				genome.weights.Add (weights[j]);
-			}
+            for (int j = 0; j < weights.Count; j++)
+            {
+                genome.weights.Add(weights[j]);
+            }
 		}
 		
 		List<float> outweights = new List<float> ();
 		outputLayer.GetWeights(ref outweights);
-		for (int i=0; i<outweights.Count; i++)
+        for (int i = 0; i < outweights.Count; i++)
         {
-			genome.weights.Add (outweights[i]);
-		}
+            genome.weights.Add(outweights[i]);
+        }
 		
 		return genome;
 	}
@@ -257,16 +262,15 @@ public class NNet
 		
 		List<Neuron> neurons = new List<Neuron>();
 
-		for(int i=0; i<neuronsPerHidden; i++){
-			//init
+		for(int i=0; i<neuronsPerHidden; i++)
+        {
 			neurons.Add(new Neuron());
 			List<float> weights = new List<float>();
-			//init
-			
-			for(int j=0; j<numofInputs+1;j++){
-				weights.Add(0.0f);
-				weights[j] = genome.weights[i*neuronsPerHidden + j];
-			}
+
+            for (int j = 0; j < numofInputs + 1; j++)
+            {
+                weights.Add(genome.weights[i * numofInputs + j]);
+            }
 			neurons[i].weights = new List<float>();
 			neurons[i].Initilise(weights, numofInputs);
 		}
@@ -282,12 +286,12 @@ public class NNet
 			outneurons.Add(new Neuron());
 
 			List<float> weights = new List<float>();
-			
-			for(int j=0; j<neuronsPerHidden + 1; j++)
+
+            for (int j = 0; j < neuronsPerHidden + 1; j++)
             {
-				weights.Add (0.0f);
-				weights[j] = genome.weights[i*neuronsPerHidden + j];
-			}
+                weights.Add(0.0f);
+                weights[j] = genome.weights[i * neuronsPerHidden + j];
+            }
 			outneurons[i].weights = new List<float>();
 			outneurons[i].Initilise(weights, neuronsPerHidden);
 		}
@@ -318,25 +322,25 @@ public class NLayer
 	public void Evaluate(List<float> input, ref List<float> output)
     {
 		int inputIndex = 0;
-		//cycle over all the neurons and sum their weights against the inputs
-		for (int i=0; i< totalNeurons; i++)
+        //cycle over all the neurons and sum their weights against the inputs
+        for (int i = 0; i < totalNeurons; i++)
         {
-			float activation = 0.0f;
-			//sum the weights to the activation value
-			//we do the sizeof the weights - 1 so that we can add in the bias to the activation afterwards.
-			for(int j=0; j< neurons[i].numInputs - 1; j++){
+            float activation = 0.0f;
+            //sum the weights to the activation value
+            //we do the sizeof the weights - 1 so that we can add in the bias to the activation afterwards.
+            for (int j = 0; j < neurons[i].numInputs; j++)
+            {
+                activation += input[inputIndex] * neurons[i].weights[j];
+                inputIndex++;
+            }
 
-				activation += input[inputIndex] * neurons[i].weights[j];
-				inputIndex++;
-			}
-			
-			//add the bias
-			//the bias will act as a threshold value to
-			activation += neurons[i].weights[neurons[i].numInputs] * (-1.0f);//BIAS == -1.0f
-			
-			output.Add(Sigmoid(activation, 1.0f));
-			inputIndex = 0;
-		}
+            //add the bias
+            //the bias will act as a threshold value to
+            activation += neurons[i].weights[neurons[i].numInputs] * (-1.0f);//BIAS == -1.0f
+
+            output.Add(Sigmoid(activation, 1.0f));
+            inputIndex = 0;
+        }
 	}
 	
 	public void LoadLayer(List<Neuron> input)
@@ -352,16 +356,16 @@ public class NLayer
 
 		if (neurons.Count < numOfNeurons)
         {
-			for(int i=0; i<numOfNeurons; i++)
+            for (int i = 0; i < numOfNeurons; i++)
             {
-				neurons.Add(new Neuron());
-			}
+                neurons.Add(new Neuron());
+            }
 		}
 
-		for(int i=0; i<numOfNeurons; i++)
+        for (int i = 0; i < numOfNeurons; i++)
         {
-			neurons[i].Populate(numOfInputs);
-		}
+            neurons[i].Populate(numOfInputs);
+        }
 	}
 	
 	public void SetWeights(List<float> weights, int numOfNeurons, int numOfInputs)
@@ -372,27 +376,27 @@ public class NLayer
 
 		if (neurons.Count < numOfNeurons)
         {
-			for (int i=0; i<numOfNeurons - neurons.Count; i++)
+            for (int i = 0; i < numOfNeurons - neurons.Count; i++)
             {
-				neurons.Add(new Neuron());
-			}
+                neurons.Add(new Neuron());
+            }
 		}
 		//Copy the weights into the neurons.
 		for (int i=0; i<numOfNeurons; i++)
         {
-			if(neurons[i].weights.Count < numOfInputs)
+            if (neurons[i].weights.Count < numOfInputs)
             {
-				for(int k=0; k<numOfInputs-neurons[i].weights.Count; k++)
+                for (int k = 0; k < numOfInputs - neurons[i].weights.Count; k++)
                 {
-					neurons[i].weights.Add (0.0f);
-				}
-			}
+                    neurons[i].weights.Add(0.0f);
+                }
+            }
 
-			for(int j=0; j<numOfInputs; j++)
+            for (int j = 0; j < numOfInputs; j++)
             {
-				neurons[i].weights[j] = weights[index];
-				index++;
-			}
+                neurons[i].weights[j] = weights[index];
+                index++;
+            }
 		}
 	}
 	
@@ -403,10 +407,10 @@ public class NLayer
 		
 		for (int i=0; i<this.totalNeurons; i++)
         {
-			for(int j=0; j<neurons[i].weights.Count; j++)
+            for (int j = 0; j < neurons[i].weights.Count; j++)
             {
-				output[totalNeurons*i + j] = neurons[i].weights[j];
-			}
+                output[totalNeurons * i + j] = neurons[i].weights[j];
+            }
 		}
 	}
 	
@@ -422,13 +426,13 @@ public class Neuron
 {
 	public int numInputs;
 	public List<float> weights = new List<float>();
-	
-	
-	public float RandomFloat()
-	{
-		float rand = (float)Random.Range (0.0f, 32767.0f);
-		return rand / 32767.0f/*32767*/ + 1.0f;
-	}
+
+
+    public float RandomFloat()
+    {
+        float rand = (float)Random.Range(0.0f, 32767.0f);
+        return rand / 32767.0f/*32767*/ + 1.0f;
+    }
 	
 	public float RandomClamped()
 	{

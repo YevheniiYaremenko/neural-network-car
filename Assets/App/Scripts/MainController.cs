@@ -18,6 +18,15 @@ public class MainController : MonoBehaviour
         }
     }
 
+    [Header("Neural Network")]
+    public int hiddenNeuronsCount = 9;
+    public int inputCount = 5;
+    public int outputCount = 2;
+
+    [Header("Genetic Algorithm")]
+    public int genomeCount = 15;
+
+    [Header("UI")]
     [SerializeField] Button trainButton;
     [SerializeField] Button testButton;
     [SerializeField] Text status;
