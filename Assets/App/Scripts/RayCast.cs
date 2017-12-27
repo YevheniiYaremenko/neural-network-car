@@ -56,7 +56,8 @@ public class RayCast : MonoBehaviour {
 
 	}
 
-	void CastRay() {
+	void CastRay()
+    {
 		//left linecast
 		Physics.Linecast (origin, left, out hit_l);
 		Debug.DrawLine (origin, left, Color.yellow);

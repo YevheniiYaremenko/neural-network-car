@@ -16,7 +16,8 @@ public class GA {
 	public List<Genome> population = new List<Genome>();
 	public List<int> crossoverSplits = new List<int>();
 
-	public GA(){
+	public GA()
+    {
 		this.currentGenome = -1;
 		this.totalPopulation = 0;
 		genomeID = 0;
@@ -25,7 +26,8 @@ public class GA {
 		MAX_PERBETUATION = 0.3f;
 	}
 		
-	public Genome GetNextGenome(){
+	public Genome GetNextGenome()
+    {
 		currentGenome++;
 		if (currentGenome >= population.Count )
 			return null;
@@ -33,10 +35,12 @@ public class GA {
 		return population [this.currentGenome];
 	}
 
-	public Genome GetBestGenome() {
+	public Genome GetBestGenome()
+    {
 		int bestGenome = -1;
 		float fitness = 0;
-		for (int i=0; i < population.Count; i++) {
+		for (int i=0; i < population.Count; i++)
+        {
 			fitness = population[i].fitness;
 			bestGenome = i;
 		}
@@ -44,11 +48,14 @@ public class GA {
 		return population [bestGenome];
 	}
 
-	public Genome GetWorstGenome(){
+	public Genome GetWorstGenome()
+    {
 		int worstGenome = -1;
 		float fitness = 1000000.0f;
-		for (int i=0; i < population.Count; i++) {
-			if(population[i].fitness < fitness){
+		for (int i=0; i < population.Count; i++)
+        {
+			if(population[i].fitness < fitness)
+            {
 				fitness = population[i].fitness;
 				worstGenome = i;
 			}
@@ -57,37 +64,40 @@ public class GA {
 		return population [worstGenome];
 	}
 
-	public Genome GetGenome(int index){
+	public Genome GetGenome(int index)
+    {
 		if(index >= totalPopulation)
 			return null;
 		return population [index];
 	}
 
-	public int GetCurrentGenomeIndex(){
+	public int GetCurrentGenomeIndex()
+    {
 		return currentGenome;
 	}
 
-	public int GetCurrentGenomeID(){
+	public int GetCurrentGenomeID()
+    {
 		return population [currentGenome].ID;
 	}
 
-	public int GetCurrentGeneration(){
+	public int GetCurrentGeneration()
+    {
 		return generation;
 	}
 
-	public int GetTotalPopulation() {
+	public int GetTotalPopulation()
+    {
 		return totalPopulation;
 	}
 
-	public void GenerateCrossoverSplits(int neuronsPerHidden, int inputs, int outputs){
-		//
-	}
-
-	public void GetBestCases(int totalGenomes, ref List<Genome> output){
+	public void GetBestCases(int totalGenomes, ref List<Genome> output)
+    {
 		int genomeCount = 0;
 		int runCount = 0;
 
-		while (genomeCount < totalGenomes) {
+		while (genomeCount < totalGenomes)
+        {
 			if(runCount>10)
 				return ;
 
@@ -96,31 +106,38 @@ public class GA {
 			//Find the best cases for cross breeding based on fitness score
 			float bestFitness = 0;
 			int bestIndex = -1;
-			for(int i=0; i<this.totalPopulation; i++){
-				if(population[i].fitness > bestFitness){
+			for(int i=0; i<this.totalPopulation; i++)
+            {
+				if(population[i].fitness > bestFitness)
+                {
 					bool isUsed = false;
 
-					for(int j=0; j<output.Count; j++){
-						if(output[j].ID == population[i].ID){
+					for(int j=0; j<output.Count; j++)
+                    {
+						if(output[j].ID == population[i].ID)
+                        {
 							isUsed = true;
 						}
 					}
 
-					if(isUsed == false){
+					if(isUsed == false)
+                    {
 						bestIndex = i;
 						bestFitness = population[bestIndex].fitness;
 					}
 				}
 			}
 
-			if(bestIndex!=-1){
+			if(bestIndex!=-1)
+            {
 				genomeCount++;
 				output.Add(population[bestIndex]);
 			}
 		}
 	}
 
-	public void CrossBreed (Genome g1, Genome g2, ref Genome baby1, ref Genome baby2){
+	public void CrossBreed (Genome g1, Genome g2, ref Genome baby1, ref Genome baby2)
+    {
 		int totalWeights = g1.weights.Count;
 
 		int crossover = (int)Random.Range(0,totalWeights-1);
@@ -129,7 +146,8 @@ public class GA {
 		baby1.ID = genomeID;
 		baby1.weights = new List<float> ();
 		//resize
-		for(int i=0; i<totalWeights; i++){
+		for(int i=0; i<totalWeights; i++)
+        {
 			baby1.weights.Add (0.0f);
 		}
 		genomeID++;
@@ -138,34 +156,40 @@ public class GA {
 		baby2.ID = genomeID;
 		baby2.weights = new List<float> ();
 		//resize
-		for (int i=0; i<totalWeights; i++) {
+		for (int i=0; i<totalWeights; i++)
+        {
 			baby2.weights.Add (0.0f);
 		}
 		genomeID++;
 
 		//Go from start to crossover point, copying the weights from g1
-		for(int i=0; i< crossover; i++){
+		for(int i=0; i< crossover; i++)
+        {
 			baby1.weights[i] = g1.weights[i];
 			baby2.weights[i] = g2.weights[i];
 		}
 
-		for(int i = crossover; i< totalWeights; i++){
+		for(int i = crossover; i< totalWeights; i++)
+        {
 			baby1.weights[i] = g2.weights[i];
 			baby2.weights[i] = g1.weights[i];
 		}
 	}
 
-	public Genome CreateNewGenome(int totalWeights){
+	public Genome CreateNewGenome(int totalWeights)
+    {
 		Genome genome = new Genome ();
 		genome.ID = genomeID;
 		genome.fitness = 0.0f;
 		genome.weights = new List<float> ();
 		//resize
-		for (int i=0; i<totalWeights; i++) {
+		for (int i=0; i<totalWeights; i++)
+        {
 			genome.weights.Add(0.0f);
 		}
 
-		for(int j=0; j<totalWeights; j++){
+		for(int j=0; j<totalWeights; j++)
+        {
 			genome.weights[j] = RandomClamped();
 		}
 
@@ -173,25 +197,30 @@ public class GA {
 		return genome;
 	}
 
-	public void GenerateNewPopulation (int totalPop, int totalWeights){
+	public void GenerateNewPopulation (int totalPop, int totalWeights)
+    {
 		generation = 1;
 		ClearPopulation();
 		currentGenome = -1;
 		totalPopulation = totalPop;
 		//resize
-		if (population.Count < totalPop) {
-			for(int i=population.Count; i<totalPop; i++){
+		if (population.Count < totalPop)
+        {
+			for(int i=population.Count; i<totalPop; i++)
+            {
 				population.Add(new Genome());
 			}
 		}
 
-		for(int i=0; i<population.Count; i++){
+		for(int i=0; i<population.Count; i++)
+        {
 			Genome genome = new Genome();
 			genome.ID = genomeID;
 			genome.fitness = 0.0f;
 			genome.weights = new List<float>();
 			//resize
-			for (int k=0; k<totalWeights; k++){
+			for (int k=0; k<totalWeights; k++)
+            {
 				genome.weights.Add(RandomClamped());
 			}
 
@@ -200,7 +229,8 @@ public class GA {
 		}
 	}
 
-	public void BreedPopulation() {
+	public void BreedPopulation()
+    {
 		List<Genome> bestGenomes = new List<Genome>();
 
 		//find the 4 best genomes
@@ -263,8 +293,10 @@ public class GA {
 		generation++;
 	}
 
-	public void ClearPopulation() {
-		for(int i=0; i<population.Count; i++){
+	public void ClearPopulation()
+    {
+		for(int i=0; i<population.Count; i++)
+        {
 			if(population[i]!=null){
 				population[i] = null;
 			}
@@ -272,19 +304,25 @@ public class GA {
 		population.Clear ();
 	}
 
-	public void Mutate(Genome genome){
-		for (int i=0; i<genome.weights.Count; i++) {
-			if(RandomClamped() < MUTATION_RATE){
+	public void Mutate(Genome genome)
+    {
+		for (int i=0; i<genome.weights.Count; i++)
+        {
+			if(RandomClamped() < MUTATION_RATE)
+            {
 				genome.weights[i] += (RandomClamped() * MAX_PERBETUATION);
 			}
 		}
 	}
 
-	public void SetGenomeFitness(float fitness, int index){
-		if (index >= population.Count) {
+	public void SetGenomeFitness(float fitness, int index)
+    {
+		if (index >= population.Count)
+        {
 			return;
 		}
-		else {
+		else
+        {
 			population [index].fitness = fitness;
 		}
 	}
