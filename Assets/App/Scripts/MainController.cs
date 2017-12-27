@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainController : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class MainController : MonoBehaviour
 
     [Header("Genetic Algorithm")]
     public int genomeCount = 15;
+    [SerializeField] string logFilePath = "E:/UnityProjects/MyProjects/neural-network-car/Assets/Data/fitnessLog.txt";
+
 
     [Header("UI")]
     [SerializeField] Button trainButton;
@@ -66,5 +69,13 @@ public class MainController : MonoBehaviour
             currentGenome,
             maxGenome,
             currentGeneration);
+    }
+
+    public void LogGenomTest(float fitness)
+    {
+        using (StreamWriter sw = File.AppendText(logFilePath))
+        {
+            sw.WriteLine(fitness);
+        }
     }
 }
