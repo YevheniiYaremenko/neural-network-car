@@ -61,10 +61,12 @@ public class Entity : MonoBehaviour {
 		checkpoints = hit.checkpoints;
 		if (testAgent.hasFailed) {
 			if(genAlg.GetCurrentGenomeIndex() == 15-1){
+
 				EvolveGenomes();
 				return;
 			}
-			NextTestSubject();
+            //Debug.Log(string.Format("{0:0.00}", testAgent.dist));
+            NextTestSubject();
 		}
 		currentAgentFitness = testAgent.dist;
 		if (currentAgentFitness > bestFitness) {
@@ -72,7 +74,8 @@ public class Entity : MonoBehaviour {
 		}
 	}
 
-	public void NextTestSubject(){
+	public void NextTestSubject()
+    {
 		genAlg.SetGenomeFitness (currentAgentFitness, genAlg.GetCurrentGenomeIndex ());
 		currentAgentFitness = 0.0f;
 		Genome genome = genAlg.GetNextGenome ();
@@ -84,8 +87,6 @@ public class Entity : MonoBehaviour {
 
 		testAgent.Attach (neuralNet);
 		testAgent.ClearFailure ();
-
-
 
 		//reset the checkpoints
 		CPs = GameObject.FindGameObjectsWithTag ("Checkpoint");
