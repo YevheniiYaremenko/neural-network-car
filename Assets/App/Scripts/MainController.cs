@@ -20,6 +20,9 @@ public class MainController : MonoBehaviour
     }
 
     public bool trainMode = true;
+    public bool clockwise = true;
+    public Vector3 clockwiseRotation;
+    public Vector3 inverseClockwiseRotation;
     [SerializeField] Entity entity;
 
     [Header("Neural Network")]

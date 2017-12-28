@@ -19,7 +19,6 @@ public class Entity : MonoBehaviour {
 	public Material normal;
 
 	private Vector3 defaultpos;
-	private Quaternion defaultrot;
 
     MainController controller;
 
@@ -46,7 +45,6 @@ public class Entity : MonoBehaviour {
 		hit = gameObject.GetComponent<hit> ();
 		checkpoints = hit.checkpoints;
 		defaultpos = transform.position;
-		defaultrot = transform.rotation;
 	}
     
 	void Update ()
@@ -85,7 +83,7 @@ public class Entity : MonoBehaviour {
 		neuralNet.FromGenome (genome, controller.inputCount, controller.hiddenNeuronsCount, controller.outputCount);
 
 		transform.position = defaultpos;
-		transform.rotation = defaultrot;
+		transform.eulerAngles = controller.clockwise ? controller.clockwiseRotation : controller.inverseClockwiseRotation;
 
 		testAgent.Attach (neuralNet);
 		testAgent.ClearFailure ();
