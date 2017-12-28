@@ -54,7 +54,6 @@ public class Entity : MonoBehaviour {
         {
 			if(genAlg.GetCurrentGenomeIndex() == controller.genomeCount - 1)
             {
-
 				EvolveGenomes();
 				return;
 			}

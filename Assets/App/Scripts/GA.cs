@@ -23,7 +23,7 @@ public class GA {
 		genomeID = 0;
 		generation = 1;
 		MUTATION_RATE = 0.15f;
-		MAX_PERBETUATION = 0.3f;
+		MAX_PERBETUATION = 0.2f;
 	}
 		
 	public Genome GetNextGenome()
@@ -242,8 +242,7 @@ public class GA {
 
 		//find the 4 best genomes
 		this.GetBestCases (4, ref bestGenomes);
-
-		//Breed them with each other twice to form 3*2 + 2*2 + 1*2 = 12 children
+        
 		List<Genome> children = new List<Genome>();
 
 		//Carry on the best
@@ -294,7 +293,10 @@ public class GA {
 		}
 
 		ClearPopulation ();
-		population = children;
+        for (int i=0;i<MainController.Instance.genomeCount;i++)
+        {
+            population.Add(children[i]);
+        }
 
 		currentGenome = 0;
 		generation++;
