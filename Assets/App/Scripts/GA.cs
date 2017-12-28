@@ -212,21 +212,28 @@ public class GA {
 			}
 		}
 
-		for(int i=0; i<population.Count; i++)
+        for (int i = 0; i < population.Count; i++)
         {
-			Genome genome = new Genome();
-			genome.ID = genomeID;
-			genome.fitness = 0.0f;
-			genome.weights = new List<float>();
-			//resize
-			for (int k=0; k<totalWeights; k++)
-            {
-				genome.weights.Add(RandomClamped());
-			}
+            Genome genome = new Genome();
+            genome.ID = genomeID;
+            genome.fitness = 0.0f;
+            genome.weights = new List<float>();
 
-			genomeID++;
-			population[i] = genome;
-		}
+            if (MainController.Instance.trainMode)
+            {
+                for (int k = 0; k < totalWeights; k++)
+                {
+                    genome.weights.Add(RandomClamped());
+                }
+            }
+            else
+            {
+                genome.weights = MainController.Instance.GetData();
+            }
+
+            genomeID++;
+            population[i] = genome;
+        }
 	}
 
 	public void BreedPopulation()

@@ -19,6 +19,9 @@ public class MainController : MonoBehaviour
         }
     }
 
+    public bool trainMode = true;
+    [SerializeField] Entity entity;
+
     [Header("Neural Network")]
     public int hiddenNeuronsCount = 9;
     public int inputCount = 5;
@@ -28,30 +31,30 @@ public class MainController : MonoBehaviour
     public int genomeCount = 15;
     [SerializeField] string logFilePath = "E:/UnityProjects/MyProjects/neural-network-car/Assets/Data/fitnessLog.txt";
 
-
     [Header("UI")]
-    [SerializeField] Button trainButton;
-    [SerializeField] Button testButton;
     [SerializeField] Text status;
     [TextArea] [SerializeField] string statusFormat = "Current Fitness: {0:0.00}; \nBest Fitness: {1:0.00}; \nGenome: {2}/{3} \nGeneration: {4}";
 
-    public void Train()
-    {
-        //TODO
-        trainButton.interactable = false;
-        testButton.interactable = true;
-    }
-
-    public void Test()
-    {
-        //TODO
-        trainButton.interactable = true;
-        testButton.interactable = false;
-    }
-
     public void SaveData()
     {
-        //TODO
+        var weights = entity.genAlg.GetGenome(entity.genAlg.currentGenome).weights;
+        for (int i = 0; i < weights.Count; i++)
+        {
+            PlayerPrefs.SetFloat(string.Format("Genome_{0}[{1}]", hiddenNeuronsCount, i), weights[i]);
+        }
+    }
+
+    public List<float> GetData()
+    {
+        int totalWeights = (hiddenNeuronsCount + 1) * (inputCount + outputCount);
+        var weights = new List<float>();
+
+        for (int i = 0; i < totalWeights; i++)
+        {
+            string key = string.Format("Genome_{0}[{1}]", hiddenNeuronsCount, i);
+            weights.Add(PlayerPrefs.GetFloat(key, 0));
+        }
+        return weights;
     }
 
     public void UpdateStatus(
